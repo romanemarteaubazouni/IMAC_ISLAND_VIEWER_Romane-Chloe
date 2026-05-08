@@ -55,8 +55,24 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
     return glm::perlin(position + cachedOffset);
 }
 
-float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction) {
+
+float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction,int oct, float lacu, float gain, float seed, float scale) {
     // TODO(student): Implement octave/fractal noise accumulation.
-    // Temporary fallback return directly from the provided noise function for testing.
-    return noiseFunction(position);
+    //initialisation 
+    float noise=scale; // resultat
+    float amplitude= 0.5;
+    float frequency= 1;
+
+    for(int i=0; i<=oct; i++){
+        scale+= amplitude*noiseFunction(frequency*seed*i* position); //on * par seed les coordonnées à chaque boucle
+        amplitude*=gain;
+        frequency*=lacu;
+    }
+    // on centre en 0 pour avoir un résultat entre [-1,1]
+        scale/= oct; 
+        //noiseFunction(...) <=1 dc valeurmax ajouté à scale pr chaque boucle est amplitude
+        // oct = nbr de boucle
+    return scale;
 }
+
+//J'ai modifié les paramètres d'entrée, à voir comment on comprend la consigne
