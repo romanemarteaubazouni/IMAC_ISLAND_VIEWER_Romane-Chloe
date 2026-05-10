@@ -56,23 +56,30 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
 }
 
 
-float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction,int oct, float lacu, float gain, float seed, float scale) {
-    // TODO(student): Implement octave/fractal noise accumulation.
-    //initialisation 
-    float noise=scale; // resultat
-    float amplitude= 0.5;
-    float frequency= 1;
+float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction, int oct, float lacu, float gain, float seed, float scale) {
+    float value {0.f}; // Résultat du bruit
 
-    for(int i=0; i<=oct; i++){
-        scale+= amplitude*noiseFunction(frequency*seed*i* position); //on * par seed les coordonnées à chaque boucle
-        amplitude*=gain;
-        frequency*=lacu;
+    float amplitude {0.5f}; // Amplitude de chaque couche du bruit
+    float frequency {1.f}; // Fréquence de chaque couhce du bruit
+    // Pour normaliser notre résultat, il faut sommer les amplitudes de chaque couche, puisque celle-ci n'est pas constante
+    float sum_amplitudes {0.f};
+    // Pour chaque couche :
+    for(int i {0}; i < oct; i++) {
+        // seed agit comme un offset : "valeur de départ pour la génération du bruit, permettant d'obtenir des résultats différents à chaque exécution ou de reproduire les mêmes résultats en utilisant la même seed"
+        // value évolue à chaque itération grâce aux facteurs frequency et amplitude
+        // position est un glm::vec2
+        value += amplitude * noiseFunction(frequency * position * scale + seed);
+        
+        sum_amplitudes += amplitude;
+        amplitude *= gain; // Gain en amplitude de chaque couche
+        frequency *= lacu; // Gain en fréquence de chaque couche
     }
-    // on centre en 0 pour avoir un résultat entre [-1,1]
-        scale/= oct; 
-        //noiseFunction(...) <=1 dc valeurmax ajouté à scale pr chaque boucle est amplitude
-        // oct = nbr de boucle
-    return scale;
+    // On normalise pour avoir un résultat entre [-1,1]
+    // On normalise par rapport aux amplitudes (car chaque itération n'a pas le même poids)
+    value /= sum_amplitudes;
+
+    return value;
 }
 
-//J'ai modifié les paramètres d'entrée, à voir comment on comprend la consigne
+// J'ai modifié les paramètres d'entrée, à voir comment on comprend la consigne
+// Exposition des paramètres dans l'interface pour permettre l'exploration visuelle (comment ? où ?)
