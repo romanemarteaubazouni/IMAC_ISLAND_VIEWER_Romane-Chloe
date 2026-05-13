@@ -10,17 +10,25 @@
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
     std::vector<glm::vec2> positions {};
 
-    positions.reserve(1000);
+    // positions.reserve(1000);
     // Naive random generation
-    for (int i {0}; i < 1000; ++i)
-    {
-        positions.emplace_back(
-            static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX),
-            static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)
-        );
-    }
+    // for (int i {0}; i < 1000; ++i)
+    // {
+    //     positions.emplace_back(
+    //         static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX),
+    //         static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)
+    //     );
+    // }
 
     // TODO(student): implement Poisson disk sampling to replace the above naive random generation
+    // Initialization
+    std::vector<int> samples {};
+    float w = params.radius / sqrt(2);
+    int columns = GetScreenWidth() / w;
+    int rows = GetScreenHeight() / w;
+    for (int i {}; i < rows * columns; i++) {
+        samples.push_back(-1);
+    }
     // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
     return positions;
 }

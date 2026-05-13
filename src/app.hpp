@@ -11,6 +11,8 @@ struct ImageGenerationParameters {
 };
 
 struct PointsGenerationParameters {
+    int radius {};
+    int samples_before_rejection {};
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
 };
 
