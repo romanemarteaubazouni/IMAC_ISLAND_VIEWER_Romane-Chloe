@@ -82,16 +82,22 @@ void generateHeightmap(AppContext& context) {
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
-        [&](glm::vec2 const& p)->float {
+        [&](glm::vec2 const& p)->float { //c'est des coordonnées
             // TODO(student): implement stack based noise and island mask
-
-            return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+            //on doit calculer distance au centre
+            //coordonnée du centre ( on convertit dans [0,1])
+            glm::vec2 const centre = {0.5f, 0.5f};
+            float d= sqrt(pow(centre.x-p.x,2) + pow(centre.y-p.y,2));   //calcul distance du centre ac pythagore 
+            // + loins -effet 
+            float masque= 1.f-d;
+            return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * masque);
         });
 
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
         if (v < 0.3f)
         {
+            //a changer ici pour les couleurs
             return color_from({ 70, 130, 180 }); // water
         }
         else if (v < 0.5f)
