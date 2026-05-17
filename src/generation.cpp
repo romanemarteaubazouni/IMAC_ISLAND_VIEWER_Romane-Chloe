@@ -80,12 +80,14 @@ void generateHeightmap(AppContext& context) {
     }
 
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
-
+    int oct {100};
+    float lacu {0.2f};
+    float gain {0.3f};
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float {
             // TODO(student): implement stack based noise and island mask
 
-            return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+            return octaveNoise(p, perlinNoise, oct, lacu, gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
         });
 
     // exemple conversion from heightmap to color image
