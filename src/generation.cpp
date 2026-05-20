@@ -23,9 +23,9 @@
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
     std::srand(std::time(nullptr));
 
-    int width = GetScreenWidth();
-    int height = GetScreenHeight();
-    int r = params.radius;
+    float width = 1;
+    float height = 1;
+    float r = params.radius;
     int k = params.samples_before_rejection;
 
     // Step 0 : initializing
@@ -35,11 +35,11 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
 
     std::vector<glm::vec2> grid(rows * columns, glm::vec2(-1.0f, -1.0f));
 
-    // Step 1 : choosing random starting point
-    int x = std::rand() % width;
-    int y = std::rand() % height;
-    int startCol = x / w;
-    int startRow = y / w;
+    // Step 1 : choosing random starting point between 0.0 and 1.0
+    float x = (static_cast<float>(std::rand()) / RAND_MAX) * width;
+    float y = (static_cast<float>(std::rand()) / RAND_MAX) * height;
+    int startCol = static_cast<int>(x / w);
+    int startRow = static_cast<int>(y / w);
     glm::vec2 startPos = {x, y};
     grid[startCol + startRow * columns] = startPos;
 
@@ -53,14 +53,14 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
         bool found = false;
         
         for (int n {}; n < k ; n++) {
-            float angle = (std::rand() / RAND_MAX) % 2*M_PI;
-            float m = (std::rand() / RAND_MAX) % r + r;
+            float angle = (static_cast<float>(std::rand()) / RAND_MAX) * 2.0f * M_PI;
+            float m = (static_cast<float>(std::rand()) / RAND_MAX) * r + r;
             float offsetX = cos(angle);
             float offsetY = sin(angle);
             glm::vec2 offset = position + glm::vec2(offsetX, offsetY) * m;
-            if (offsetX >= 0 && offsetX < width && offsetY >= 0 && offsetY < height) {
-                int col = offsetX / w;
-                int row = offsetY / w;
+            if (offset.x >= 0 && offset.x < width && offset.y >= 0 && offset.y < height) {
+                int col = offset.x / w;
+                int row = offset.y / w;
 
                 bool ok = true;
 
@@ -88,7 +88,7 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
         }
         
         if (!found) {
-            active.pop_back();
+            active.erase(active.begin() + randIndex);
         }
     }
     return grid;
