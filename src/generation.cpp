@@ -9,71 +9,90 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "generation.hpp"
+
+#include "noise.hpp"
+#include "raylib.h"
+
+#include "utils/raylibUtils.hpp"
+#include <algorithm> // for std::clamp
+
+#include <cstdlib>
+#include <ctime>
+
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
     std::srand(std::time(nullptr));
-    std::vector<glm::vec2> positions {};
+
     int width = GetScreenWidth();
     int height = GetScreenHeight();
     int r = params.radius;
     int k = params.samples_before_rejection;
+
     // Step 0 : initializing
-    float w = params.radius / sqrt(2);
+    float w = r / sqrt(2);
     int columns = width / w;
     int rows = height / w;
-    for (int i {}; i < rows * columns; i++) {
-        positions.push_back({-1, -1});
-    }
+
+    std::vector<glm::vec2> grid(rows * columns, glm::vec2(-1.0f, -1.0f));
+
     // Step 1 : choosing random starting point
     int x = std::rand() % width;
     int y = std::rand() % height;
-    int i = x / w;
-    int j = y / w;
-    glm::vec2 pos = {x, y};
-    positions[i + j * columns] = pos;
+    int startCol = x / w;
+    int startRow = y / w;
+    glm::vec2 startPos = {x, y};
+    grid[startCol + startRow * columns] = startPos;
+
     // Step 2 : creating active list
     std::vector<glm::vec2> active {};
-    active.push_back(pos);
+    active.push_back(startPos);
 
     while (!active.empty()) {
-        int index = std::rand() % active.size();
-        glm::vec2 position = active[index];
+        int randIndex = std::rand() % active.size();
+        glm::vec2 position = active[randIndex];
         bool found = false;
+        
         for (int n {}; n < k ; n++) {
             float angle = (std::rand() / RAND_MAX) % 2*M_PI;
             float m = (std::rand() / RAND_MAX) % r + r;
             float offsetX = cos(angle);
             float offsetY = sin(angle);
             glm::vec2 offset = position + glm::vec2(offsetX, offsetY) * m;
+            if (offsetX >= 0 && offsetX < width && offsetY >= 0 && offsetY < height) {
+                int col = offsetX / w;
+                int row = offsetY / w;
 
-            int col = offsetX / w;
-            int row = offsetY / w;
+                bool ok = true;
 
-            bool ok = true;
+                for (int i {-1}; i <= 1; i++)  {
+                    for (int j {-1}; j <= 1; j++) {
+                        int index = (col + i) + (row + j) * columns;
+                        glm::vec2 neighbor = grid[index];
+                        if (neighbor != glm::vec2(-1, -1)) {
+                            float d = glm::distance(offset, neighbor);
 
-            for (int i {-1}; i <= 1; i++)  {
-                for (int j {-1}; j <= 1; j++) {
-                    glm::vec2 neighbor = positions[i + j * columns];
-                    if (neighbor != glm::vec2(-1, -1)) {
-                        float d = glm::distance(offset, neighbor);
-
-                        if (d < r) {
-                            ok = false;
+                            if (d < r) {
+                                ok = false;
+                            }
                         }
                     }
                 }
-            }
-            if (ok) {
-                found = true;
-                positions[col + row*columns] = offset;
-                active.push_back(offset);
+
+                if (ok) {
+                    found = true;
+                    grid[col + row*columns] = offset;
+                    active.push_back(offset);
+                    break;
+                }
             }
         }
-
+        
         if (!found) {
             active.pop_back();
         }
     }
-    return positions;
+    return grid;
+
 }
 
 void generateObjectsPositions(AppContext& context) {
