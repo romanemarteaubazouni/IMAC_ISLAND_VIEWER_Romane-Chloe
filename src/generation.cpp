@@ -83,24 +83,41 @@ void generateHeightmap(AppContext& context) {
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float { //c'est des coordonnées
+            int oct {20};
+            float lacu {0.2f};
+            float gain {0.3f};
             // TODO(student): implement stack based noise and island mask
             //on doit calculer distance au centre
-            //coordonnée du centre ( on convertit dans [0,1])
+
             glm::vec2 const centre = {0.5f, 0.5f};
             float d= sqrt(pow(centre.x-p.x,2) + pow(centre.y-p.y,2));   //calcul distance du centre ac pythagore 
             // + loins -effet 
-            float masque= 1.f-d;
-            return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * masque);
+            float masque;
+            float r=0.5;
+            //si au delà du rayon r=0.5 (eau)
+            if (d>r){
+                masque=0.25;
+            }
+            else{
+                 masque= pow(1.f-d,2);
+             } //au carré car sinon masque trop faible
+            return masque*octaveNoise(p, perlinNoise, oct, lacu, gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
         });
 
+
+
+        
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
-        if (v < 0.3f)
+        if (v < 0.1f)
         {
-            //a changer ici pour les couleurs
+            //a changer ici pour les couleurs ac interpolation linéaire
+            
+
+            
             return color_from({ 70, 130, 180 }); // water
         }
-        else if (v < 0.5f)
+        else if (v < 0.3f)
         {
             return color_from({ 238, 214, 175 }); // sand
         }
@@ -116,3 +133,5 @@ void generateHeightmap(AppContext& context) {
         context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture;
     }
 }
+
+
