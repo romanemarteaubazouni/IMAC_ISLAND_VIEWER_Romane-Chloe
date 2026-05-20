@@ -6,30 +6,75 @@
 #include "utils/raylibUtils.hpp"
 #include <algorithm> // for std::clamp
 
+#include <cstdlib>
+#include <ctime>
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
+    std::srand(std::time(nullptr));
     std::vector<glm::vec2> positions {};
-
-    // positions.reserve(1000);
-    // Naive random generation
-    // for (int i {0}; i < 1000; ++i)
-    // {
-    //     positions.emplace_back(
-    //         static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX),
-    //         static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)
-    //     );
-    // }
-
-    // TODO(student): implement Poisson disk sampling to replace the above naive random generation
-    // Initialization
-    std::vector<int> samples {};
+    int width = GetScreenWidth();
+    int height = GetScreenHeight();
+    int r = params.radius;
+    int k = params.samples_before_rejection;
+    // Step 0 : initializing
     float w = params.radius / sqrt(2);
-    int columns = GetScreenWidth() / w;
-    int rows = GetScreenHeight() / w;
+    int columns = width / w;
+    int rows = height / w;
     for (int i {}; i < rows * columns; i++) {
-        samples.push_back(-1);
+        positions.push_back({-1, -1});
     }
-    // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
+    // Step 1 : choosing random starting point
+    int x = std::rand() % width;
+    int y = std::rand() % height;
+    int i = x / w;
+    int j = y / w;
+    glm::vec2 pos = {x, y};
+    positions[i + j * columns] = pos;
+    // Step 2 : creating active list
+    std::vector<glm::vec2> active {};
+    active.push_back(pos);
+
+    while (!active.empty()) {
+        int index = std::rand() % active.size();
+        glm::vec2 position = active[index];
+        bool found = false;
+        for (int n {}; n < k ; n++) {
+            float angle = std::rand() % 2*M_PI;
+            float offsetX = cos(angle);
+            float offsetY = sin(angle);
+            std::vector<glm::vec2> offset = {{offsetX, offsetY}};
+
+            float m = std::rand() % r + r;
+            offset.resize(m);
+            offset.push_back(position);
+
+            int col = offsetX / w;
+            int row = offsetY / w;
+
+            bool ok = true;
+            for (int i {-1}; i <= 1; i++)  {
+                for (int j {-1}; j <= 1; j++) {
+                    glm::vec2 neighbor = positions[i + j * columns];
+                    if (neighbor != {-1, -1}) {
+                        float d = std::distance(offset, neighbor);
+
+                        if (d < r) {
+                            ok = false;
+                        }
+                    }
+                }
+            }
+            if (ok) {
+                false = true;
+                positions[col + row*columns] = offset;
+                active.push_back(offset);
+            }
+        }
+
+        if (!found) {
+            active.pop_back();
+        }
+    }
     return positions;
 }
 
