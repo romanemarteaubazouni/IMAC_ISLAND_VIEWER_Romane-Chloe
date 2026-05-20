@@ -39,24 +39,22 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
         glm::vec2 position = active[index];
         bool found = false;
         for (int n {}; n < k ; n++) {
-            float angle = std::rand() % 2*M_PI;
+            float angle = (std::rand() / RAND_MAX) % 2*M_PI;
+            float m = (std::rand() / RAND_MAX) % r + r;
             float offsetX = cos(angle);
             float offsetY = sin(angle);
-            std::vector<glm::vec2> offset = {{offsetX, offsetY}};
-
-            float m = std::rand() % r + r;
-            offset.resize(m);
-            offset.push_back(position);
+            glm::vec2 offset = position + glm::vec2(offsetX, offsetY) * m;
 
             int col = offsetX / w;
             int row = offsetY / w;
 
             bool ok = true;
+
             for (int i {-1}; i <= 1; i++)  {
                 for (int j {-1}; j <= 1; j++) {
                     glm::vec2 neighbor = positions[i + j * columns];
-                    if (neighbor != {-1, -1}) {
-                        float d = std::distance(offset, neighbor);
+                    if (neighbor != glm::vec2(-1, -1)) {
+                        float d = glm::distance(offset, neighbor);
 
                         if (d < r) {
                             ok = false;
@@ -65,7 +63,7 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
                 }
             }
             if (ok) {
-                false = true;
+                found = true;
                 positions[col + row*columns] = offset;
                 active.push_back(offset);
             }
