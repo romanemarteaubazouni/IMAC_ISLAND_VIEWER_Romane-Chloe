@@ -9,17 +9,6 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "generation.hpp"
-
-#include "noise.hpp"
-#include "raylib.h"
-
-#include "utils/raylibUtils.hpp"
-#include <algorithm> // for std::clamp
-
-#include <cstdlib>
-#include <ctime>
-
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
     std::srand(std::time(nullptr));
 
