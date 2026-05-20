@@ -81,5 +81,7 @@ float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const
     return value;
 }
 
+
+
 // J'ai modifié les paramètres d'entrée, à voir comment on comprend la consigne
 // Exposition des paramètres dans l'interface pour permettre l'exploration visuelle (comment ? où ?)
