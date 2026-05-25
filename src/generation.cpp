@@ -51,7 +51,7 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
 
     spawnPoints.push_back({params.sample_region_size.x / 2, params.sample_region_size.y / 2});
 
-    while (!spawnPoints.empty()) {
+    while (!spawnPoints.empty() && points.size() < 1000) {
         int spawnIndex = std::rand() % spawnPoints.size();
         glm::vec2 spawnCentre = spawnPoints[spawnIndex];
         bool candidateAccepted = false;

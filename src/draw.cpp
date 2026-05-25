@@ -53,9 +53,9 @@ void drawImGui(AppContext& context) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
     }
 
-    // if (ImGui::CollapsingHeader("noise scale", ImGuiTreeNodeFlags_DefaultOpen)) {
-    //     ImGui::SliderFloat("Noise scale", &context.imageGenerationParameters.noiseScale, 0.01f, 10.0f);
-    // }
+    if (ImGui::CollapsingHeader("radius", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 1.0f);
+    }
 
     // if (ImGui::CollapsingHeader("noise seed", ImGuiTreeNodeFlags_DefaultOpen)) {
     //     ImGui::SliderFloat("Noise seed", &context.imageGenerationParameters.noiseSeed, 0.01f, 10.0f);
