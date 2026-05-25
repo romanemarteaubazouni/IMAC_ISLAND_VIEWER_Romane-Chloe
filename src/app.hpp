@@ -11,7 +11,7 @@ struct ImageGenerationParameters {
 };
 
 struct PointsGenerationParameters {
-    int radius {};
+    float radius {};
     int samples_before_rejection {};
     glm::vec2 sample_region_size {};
 };
