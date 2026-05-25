@@ -11,77 +11,67 @@
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
     std::srand(std::time(nullptr));
+    
+    float cellSize = params.radius / std::sqrt(2);
 
-    float width = 1;
-    float height = 1;
-    float r = params.radius;
-    int k = params.samples_before_rejection;
+    int gridWidth = static_cast<int>(params.sample_region_size.x / cellSize);
+    int gridHeight = static_cast<int>(params.sample_region_size.y / cellSize);
+    // Grid 2D
+    std::vector<std::vector<int>> grid(gridWidth, std::vector<int>(gridHeight, 0));
 
-    // Step 0 : initializing
-    float w = r / sqrt(2);
-    int columns = width / w;
-    int rows = height / w;
+    std::vector<glm::vec2> points {};
+    std::vector<glm::vec2> spawnPoints {};
 
-    std::vector<glm::vec2> grid(rows * columns, glm::vec2(-1.0f, -1.0f));
+    spawnPoints.push_back({params.sample_region_size.x / 2, params.sample_region_size.y / 2});
 
-    // Step 1 : choosing random starting point between 0.0 and 1.0
-    float x = (static_cast<float>(std::rand()) / RAND_MAX) * width;
-    float y = (static_cast<float>(std::rand()) / RAND_MAX) * height;
-    int startCol = static_cast<int>(x / w);
-    int startRow = static_cast<int>(y / w);
-    glm::vec2 startPos = {x, y};
-    grid[startCol + startRow * columns] = startPos;
+    while (spawnPoints.size() > 0) {
+        int spawnIndex = std::rand() % spawnPoints.size();
+        glm::vec2 spawnCentre = spawnPoints[spawnIndex];
+        bool candidateAccepted = false;
+        for (int i {0}; i < params.samples_before_rejection; i++) {
+            float angle = std::rand() % 2 * M_PI;
+            glm::vec2 dir(std::sin(angle), std::cos(angle));
+            glm::vec2 candidate(spawnCentre + dir * (std::rand() % 2 * params.radius + params.radius));
 
-    // Step 2 : creating active list
-    std::vector<glm::vec2> active {};
-    active.push_back(startPos);
+            if (IsValid(candidate, params.sample_region_size, cellSize, params.radius, points, grid)) {
+                points.push_back(candidate);
+                spawnPoints.push_back(candidate);
+                grid[candidate.x/cellSize, candidate.y/cellSize] = points.size();
+                candidateAccepted = true;
+                break;
+            }
+        }
+        if (!candidateAccepted) {
+            spawnPoints.erase(spawnIndex);
+        }
+    }
+    return points;
+}
 
-    while (!active.empty()) {
-        int randIndex = std::rand() % active.size();
-        glm::vec2 position = active[randIndex];
-        bool found = false;
-        
-        for (int n {}; n < k ; n++) {
-            float angle = (static_cast<float>(std::rand()) / RAND_MAX) * 2.0f * M_PI;
-            float m = (static_cast<float>(std::rand()) / RAND_MAX) * r + r;
-            float offsetX = cos(angle);
-            float offsetY = sin(angle);
-            glm::vec2 offset = position + glm::vec2(offsetX, offsetY) * m;
-            if (offset.x >= 0 && offset.x < width && offset.y >= 0 && offset.y < height) {
-                int col = offset.x / w;
-                int row = offset.y / w;
+bool IsValid(glm::vec2 candidate, glm::vec2 sampleRegionSize, float cellSize, float radius, std::vector<glm::vec2> points, std::vector<std::vector<int>> grid) {
+    if (candidate.x >= 0 && candidate.x < sampleRegionSize.x
+        && candidate.y >=0 && candidate.y < sampleRegionSize.y) {
+            int cellX = static_cast<int>(candidate.x/cellSize);
+            int cellY = static_cast<int>(candidate.y/cellSize);
+            int searchStartX = std::max(0, cellX - 2); 
+            int searchEndX = std::min(cellX + 2, grid[0].size() - 1);
+            int searchStartY = std::max(0, cellY - 2); 
+            int searchEndY = std::min(cellY + 2, grid[1].size() - 1);
 
-                bool ok = true;
-
-                for (int i {-1}; i <= 1; i++)  {
-                    for (int j {-1}; j <= 1; j++) {
-                        int index = (col + i) + (row + j) * columns;
-                        glm::vec2 neighbor = grid[index];
-                        if (neighbor != glm::vec2(-1, -1)) {
-                            float d = glm::distance(offset, neighbor);
-
-                            if (d < r) {
-                                ok = false;
-                            }
+            for (int x {searchStartX}; x <= searchEndX; x++) {
+                for (int y {searchStartY}; y <= searchEndY; y++) {
+                    int pointIndex = grid[x, y] - 1;
+                    if (pointIndex != -1) {
+                        float dist = (candidate - points[pointIndex].magnitude);
+                        if (dist < radius) {
+                            return fasle;
                         }
                     }
                 }
-
-                if (ok) {
-                    found = true;
-                    grid[col + row*columns] = offset;
-                    active.push_back(offset);
-                    break;
-                }
             }
+            return true;
         }
-        
-        if (!found) {
-            active.erase(active.begin() + randIndex);
-        }
-    }
-    return grid;
-
+    return false;
 }
 
 void generateObjectsPositions(AppContext& context) {
