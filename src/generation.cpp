@@ -24,7 +24,7 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
 
     spawnPoints.push_back({params.sample_region_size.x / 2, params.sample_region_size.y / 2});
 
-    while (spawnPoints.size() > 0) {
+    while (!spawnPoints.empty()) {
         int spawnIndex = std::rand() % spawnPoints.size();
         glm::vec2 spawnCentre = spawnPoints[spawnIndex];
         bool candidateAccepted = false;
@@ -54,17 +54,17 @@ bool IsValid(glm::vec2 candidate, glm::vec2 sampleRegionSize, float cellSize, fl
             int cellX = static_cast<int>(candidate.x/cellSize);
             int cellY = static_cast<int>(candidate.y/cellSize);
             int searchStartX = std::max(0, cellX - 2); 
-            int searchEndX = std::min(cellX + 2, grid[0].size() - 1);
+            int searchEndX = std::min(cellX + 2, static_cast<int>(grid.size()) - 1);
             int searchStartY = std::max(0, cellY - 2); 
-            int searchEndY = std::min(cellY + 2, grid[1].size() - 1);
+            int searchEndY = std::min(cellY + 2, static_cast<int>(grid[0].size()) - 1);
 
             for (int x {searchStartX}; x <= searchEndX; x++) {
                 for (int y {searchStartY}; y <= searchEndY; y++) {
-                    int pointIndex = grid[x, y] - 1;
+                    int pointIndex = grid[x][y] - 1;
                     if (pointIndex != -1) {
-                        float dist = (candidate - points[pointIndex].magnitude);
+                        float dist = glm::length(candidate - points[pointIndex]);
                         if (dist < radius) {
-                            return fasle;
+                            return false;
                         }
                     }
                 }
