@@ -89,7 +89,17 @@ void generateObjectsPositions(AppContext& context) {
             sampleHeightmap(context, p.x, p.y)
         );
     }
-    // TODO(student): extension - filter positions by sampled height range.
+
+    for (size_t i = 0; i < context.objectPositions.size(); i++)
+    {
+        // If out of bounds :
+        if (context.objectPositions[i].z <= 0.f || context.objectPositions[i].z > 1.f) {
+            // We erase it
+            context.objectPositions.erase(context.objectPositions.begin() + i);
+            // We want to stay on that spot, otherwise we skip the next point (because erasing means erasing the empty spot too)
+            i--;
+        }
+    }
 }
 
 float sampleHeightmap(AppContext const& context, float u, float v)
