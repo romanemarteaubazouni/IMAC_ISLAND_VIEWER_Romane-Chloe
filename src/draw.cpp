@@ -57,13 +57,13 @@ void drawImGui(AppContext& context) {
         ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 1.0f);
     }
 
-    // if (ImGui::CollapsingHeader("noise seed", ImGuiTreeNodeFlags_DefaultOpen)) {
-    //     ImGui::SliderFloat("Noise seed", &context.imageGenerationParameters.noiseSeed, 0.01f, 10.0f);
-    // }
+    if (ImGui::CollapsingHeader("samples_before_rejection", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderInt("Samples before rejection", &context.pointsGenerationParameters.samples_before_rejection, 10, 100);
+    }
 
-    // if (ImGui::CollapsingHeader("noise resolution", ImGuiTreeNodeFlags_DefaultOpen)) {
-    //     ImGui::SliderFloat("Noise resolution", &context.imageGenerationParameters.resolution, 1.f, 1000.0f);
-    // }
+    if (ImGui::CollapsingHeader("nb of objects maximum", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderInt("Max nb of objects", &context.pointsGenerationParameters.nb_of_points_max, 10, 1500);
+    }
 }
 
 void drawRaylibUI(AppContext& context) {
