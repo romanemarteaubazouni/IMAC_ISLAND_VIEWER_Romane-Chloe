@@ -93,7 +93,7 @@ void generateObjectsPositions(AppContext& context) {
     for (size_t i = 0; i < context.objectPositions.size(); i++)
     {
         // If out of bounds :
-        if (context.objectPositions[i].z <= 0.f || context.objectPositions[i].z > 1.f) {
+        if (context.objectPositions[i].z <= context.pointsGenerationParameters.minimum_z || context.objectPositions[i].z >  context.pointsGenerationParameters.maximum_z) {
             // We erase it
             context.objectPositions.erase(context.objectPositions.begin() + i);
             // We want to stay on that spot, otherwise we skip the next point (because erasing means erasing the empty spot too)

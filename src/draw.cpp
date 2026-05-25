@@ -64,6 +64,14 @@ void drawImGui(AppContext& context) {
     if (ImGui::CollapsingHeader("nb of objects maximum", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderInt("Max nb of objects", &context.pointsGenerationParameters.nb_of_points_max, 10, 1500);
     }
+
+    if (ImGui::CollapsingHeader("minimum z", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderFloat("Minimum z##slider", &context.pointsGenerationParameters.minimum_z, 0.f, 1.f);
+    }
+
+    if (ImGui::CollapsingHeader("maximum z", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderFloat("Maximum z", &context.pointsGenerationParameters.maximum_z, 0.f, 1.f);
+    }
 }
 
 void drawRaylibUI(AppContext& context) {
