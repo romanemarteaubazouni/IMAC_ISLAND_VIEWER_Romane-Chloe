@@ -55,6 +55,7 @@ void drawImGui(AppContext& context) {
 
     if (ImGui::CollapsingHeader("radius", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 1.0f);
+        generateObjectsPositions(context);
     }
 
     if (ImGui::CollapsingHeader("samples_before_rejection", ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -63,14 +64,17 @@ void drawImGui(AppContext& context) {
 
     if (ImGui::CollapsingHeader("nb of objects maximum", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderInt("Max nb of objects", &context.pointsGenerationParameters.nb_of_points_max, 10, 1500);
+        generateObjectsPositions(context);
     }
 
     if (ImGui::CollapsingHeader("minimum z", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Minimum z##slider", &context.pointsGenerationParameters.minimum_z, 0.f, 1.f);
+        generateObjectsPositions(context);
     }
 
     if (ImGui::CollapsingHeader("maximum z", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Maximum z", &context.pointsGenerationParameters.maximum_z, 0.f, 1.f);
+        generateObjectsPositions(context);
     }
 }
 
