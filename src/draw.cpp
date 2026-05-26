@@ -68,7 +68,7 @@ void drawImGui(AppContext& context) {
     }
 
     if (ImGui::CollapsingHeader("minimum z", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Minimum z##slider", &context.pointsGenerationParameters.minimum_z, 0.f, 1.f);
+        ImGui::SliderFloat("Minimum z##slider", &context.pointsGenerationParameters.minimum_z, -0.1f, 1.f);
         generateObjectsPositions(context);
     }
 
