@@ -196,12 +196,10 @@ void generateHeightmap(AppContext& context) {
 
              //interpolation linéaire en OK lab
             couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
- 
-
-        
         
         }
-        else if (v < 0.3f){
+        else if (v < 0.3f)
+        {
             float pourcentage= v/0.1;
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sand));

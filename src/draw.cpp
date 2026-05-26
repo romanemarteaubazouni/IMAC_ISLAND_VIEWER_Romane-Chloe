@@ -53,9 +53,10 @@ void drawImGui(AppContext& context) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
     }
 
-    // if (ImGui::CollapsingHeader("noise scale", ImGuiTreeNodeFlags_DefaultOpen)) {
-    //     ImGui::SliderFloat("Noise scale", &context.imageGenerationParameters.noiseScale, 0.01f, 10.0f);
-    // }
+     if (ImGui::CollapsingHeader("noise scale", ImGuiTreeNodeFlags_DefaultOpen)) {
+         ImGui::SliderFloat("Noise scale", &context.imageGenerationParameters.noiseScale, 0.01f, 10.0f);
+     }
+     
 
     // if (ImGui::CollapsingHeader("noise seed", ImGuiTreeNodeFlags_DefaultOpen)) {
     //     ImGui::SliderFloat("Noise seed", &context.imageGenerationParameters.noiseSeed, 0.01f, 10.0f);
@@ -64,6 +65,10 @@ void drawImGui(AppContext& context) {
     // if (ImGui::CollapsingHeader("noise resolution", ImGuiTreeNodeFlags_DefaultOpen)) {
     //     ImGui::SliderFloat("Noise resolution", &context.imageGenerationParameters.resolution, 1.f, 1000.0f);
     // }
+
+    
+    
+    
 }
 
 void drawRaylibUI(AppContext& context) {
