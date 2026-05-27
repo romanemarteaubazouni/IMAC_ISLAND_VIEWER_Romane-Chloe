@@ -59,7 +59,7 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
 float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction, int oct, float lacu, float gain, float seed, float scale) {
     float value {0.f}; // Résultat du bruit
 
-    float amplitude {0.5f}; // Amplitude de chaque couche du bruit
+    float amplitude {1.f}; // Amplitude de chaque couche du bruit ( démarre à 1 sinon <1 perd précision)
     float frequency {1.f}; // Fréquence de chaque couhce du bruit
     // Pour normaliser notre résultat, il faut sommer les amplitudes de chaque couche, puisque celle-ci n'est pas constante
     float sum_amplitudes {0.f};

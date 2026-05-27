@@ -49,23 +49,39 @@ void drawImGui(AppContext& context) {
         generateObjectsPositions(context);
     }
 
+     if(ImGui::Button("Generate heightmap")) {
+         generateHeightmap(context);
+        regenerateMeshFromImage(context);
+       
+    }
+
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
+
+         
+         
     }
 
      if (ImGui::CollapsingHeader("noise scale", ImGuiTreeNodeFlags_DefaultOpen)) {
          ImGui::SliderFloat("Noise scale", &context.imageGenerationParameters.noiseScale, 0.01f, 10.0f);
+         
      }
      
 
-    // if (ImGui::CollapsingHeader("noise seed", ImGuiTreeNodeFlags_DefaultOpen)) {
-    //     ImGui::SliderFloat("Noise seed", &context.imageGenerationParameters.noiseSeed, 0.01f, 10.0f);
-    // }
+    if (ImGui::CollapsingHeader("gain", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderFloat("Noise gain", &context.imageGenerationParameters.gain, 0.01f, 10.0f);
+       
+    }
 
-    // if (ImGui::CollapsingHeader("noise resolution", ImGuiTreeNodeFlags_DefaultOpen)) {
-    //     ImGui::SliderFloat("Noise resolution", &context.imageGenerationParameters.resolution, 1.f, 1000.0f);
-    // }
+    if (ImGui::CollapsingHeader("lacu", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderFloat("Noise lacu", &context.imageGenerationParameters.lacu, 1.f, 10.0f);
+       
+    }
 
+    if (ImGui::CollapsingHeader(" oct", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderInt("Noise resolution", &context.imageGenerationParameters.oct, 1.f, 100.0f);
+    }
+        
     
     
     

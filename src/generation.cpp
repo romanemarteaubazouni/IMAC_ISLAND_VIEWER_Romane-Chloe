@@ -146,9 +146,9 @@ void generateHeightmap(AppContext& context) {
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float { //c'est des coordonnées
-            int oct {20};
-            float lacu {0.2f};
-            float gain {0.3f};
+            // int oct {10};
+            // float lacu {0.6f};
+            // float gain {0.2f};
             // TODO(student): implement stack based noise and island mask
             //on doit calculer distance au centre
 
@@ -164,7 +164,7 @@ void generateHeightmap(AppContext& context) {
             else{
                  masque= pow(1.f-d,2);
              } //au carré car sinon masque trop faible
-            return masque*octaveNoise(p, perlinNoise, oct, lacu, gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
+            return masque*octaveNoise(p, perlinNoise, context.imageGenerationParameters.oct, context.imageGenerationParameters.lacu,context.imageGenerationParameters.gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
         });
 
 
@@ -175,40 +175,41 @@ void generateHeightmap(AppContext& context) {
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
 
               
-        glm::vec3 water ({ 70, 130, 180 }); // water
-        glm::vec3 sand ({ 238, 214, 175 });
-        glm::vec3 grass({ 34, 139, 34 });
+    glm::vec3 eau = glm::vec3(70, 130, 200) ;glm::vec3 sable  = glm::vec3(238, 214, 175) ;
+    glm::vec3 herbe = glm::vec3(34, 139, 34) ;
+    glm::vec3 couleur ; 
 
-        glm::vec3 couleur ; 
 
-        if (v < 0.1f)
+    
+
+        if (v <= 0.01f)
         {
-            float pourcentage= v/0.1;
+            float pourcentage=0.1f*v; //pourcentage probleme
             //on transforme en lineare puis OKlab
-            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(water));
-            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sand));
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(eau));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sable));
 
-            //transfo en OKLab
+            //transfo en OKLab //problème ici
              Lab mixLab;
-            mixLab.L = a.L + pourcentage * (b.L - a.L);
-            mixLab.a = a.L + pourcentage * (b.a - a.a);
-            mixLab.b = a.b + pourcentage * (b.b - a.b);
+            mixLab.L = (a.L + pourcentage * (b.L - a.L));
+            mixLab.a = (a.a + pourcentage * (b.a - a.a));
+            mixLab.b = (a.b + pourcentage * (b.b - a.b));
 
              //interpolation linéaire en OK lab
             couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
         
         }
-        else if (v < 0.3f)
+        else if (v < 0.4f)
         {
-            float pourcentage= v/0.1;
+            float pourcentage= v*10;
             //on transforme en lineare puis OKlab
-            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sand));
-            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(grass));
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sable));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(herbe));
 
             //transfo en OKLab
             Lab mixLab;
             mixLab.L = a.L + pourcentage * (b.L - a.L);
-            mixLab.a = a.L + pourcentage * (b.a - a.a);
+            mixLab.a = a.a + pourcentage * (b.a - a.a);
             mixLab.b = a.b + pourcentage * (b.b - a.b);
 
              //interpolation linéaire en OK lab
@@ -216,16 +217,21 @@ void generateHeightmap(AppContext& context) {
         }
         else
         {
-           couleur = grass;
+           couleur = herbe;
         }
 
         //uitlisation de clamp pr rester dans le bon intervalle
         //unsigned char car signature Color (cf cette struct)
-        return color_from({
-        (unsigned char)glm::clamp(couleur.r, 0.f, 255.f),
-        (unsigned char)glm::clamp(couleur.g, 0.f, 255.f),
-        (unsigned char)glm::clamp(couleur.b, 0.f, 255.f)
-    });
+    //     return color_from({
+    //     (unsigned char)glm::clamp(couleur.r, 0.f, 255.f),
+    //     (unsigned char)glm::clamp(couleur.g, 0.f, 255.f),
+    //     (unsigned char)glm::clamp(couleur.b, 0.f, 255.f)
+    return color_from({
+    (unsigned char)(v * 255),
+    (unsigned char)(v * 255),
+    (unsigned char)(v * 255)
+});
+    // });
 
         
     }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
