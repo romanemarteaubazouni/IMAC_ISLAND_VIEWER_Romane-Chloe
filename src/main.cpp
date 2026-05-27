@@ -29,6 +29,7 @@ int main() {
 
     context.normalTree = LoadModel("../../resources/Lowpoly_tree_sample.obj");
     context.christmasTree = LoadModel("../../resources/Christmas Tree.obj");
+    // context.village_house = LoadModel("../../resources/CartoonHouse.obj");
 
     context.cube = GenMeshCube(1.0f, 1.0f, 1.0f);
     context.cubeMaterial = LoadMaterialDefault();
