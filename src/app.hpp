@@ -9,9 +9,9 @@ struct ImageGenerationParameters {
     float noiseScale { 4.0f };
     int resolution { 256 };
 
-    float lacu;
-    int oct;
-    float gain;
+    float lacu{};
+    int oct{};
+    float gain{};
 };
 
 struct PointsGenerationParameters {

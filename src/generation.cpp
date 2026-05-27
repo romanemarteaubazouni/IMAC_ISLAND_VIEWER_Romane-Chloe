@@ -164,7 +164,9 @@ void generateHeightmap(AppContext& context) {
             else{
                  masque= pow(1.f-d,2);
              } //au carré car sinon masque trop faible
-            return masque*octaveNoise(p, perlinNoise, context.imageGenerationParameters.oct, context.imageGenerationParameters.lacu,context.imageGenerationParameters.gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
+             float n=octaveNoise(p, perlinNoise, context.imageGenerationParameters.oct, context.imageGenerationParameters.lacu,context.imageGenerationParameters.gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
+             n = (n + 1.f) * 0.5f; // on normalise ici A VOIR PQ
+            return masque*n;
         });
 
 
