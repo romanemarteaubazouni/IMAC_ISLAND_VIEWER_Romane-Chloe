@@ -23,6 +23,9 @@ struct PointsGenerationParameters {
     float separation_of_trees {0.8f};
     bool noNormalTree = false;
     bool noChristmasTree = false;
+
+    float christmasTreeHeight {0.04f};
+    float normalTreeHeight {0.04f};
 };
 
 struct AppContext {
