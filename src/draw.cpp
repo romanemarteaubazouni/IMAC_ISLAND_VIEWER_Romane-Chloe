@@ -37,8 +37,12 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
             pos.y * context.terrainSize.z
         };
         Vector3 position = Vector3Transform(modelPos, terrainCentering);
-
-        DrawModel(context.tree, position, 0.05f,  WHITE);
+        if (position.y > 0.5f) {
+            DrawModel(context.christmasTree, position, 0.03f,  WHITE);
+        }
+        else {
+            DrawModel(context.normalTree, position, 0.05f,  WHITE);
+        }
     }
 }
 

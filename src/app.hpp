@@ -40,7 +40,8 @@ struct AppContext {
 
     std::vector<glm::vec3> objectPositions {};
 
-    Model tree {};
+    Model normalTree {};
+    Model christmasTree {};
 
     // A simple cube mesh and material we use to draw objects on the terrain.
     Mesh cube {};
