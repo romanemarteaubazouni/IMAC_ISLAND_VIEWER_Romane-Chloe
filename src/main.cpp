@@ -27,7 +27,7 @@ int main() {
 
     AppContext context {};
 
-    context.tree = LoadModel("../../resources/...");
+    context.tree = LoadModel("../../resources/Lowpoly_tree_sample.obj");
 
     context.cube = GenMeshCube(1.0f, 1.0f, 1.0f);
     context.cubeMaterial = LoadMaterialDefault();

@@ -30,8 +30,6 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
         return;
     }
 
-    float const treeHalfHeight { 0.5f * context.treeScale };
-
     for (glm::vec3 const& pos : context.objectPositions) {
         Vector3 modelPos = {
             pos.x * context.terrainSize.x,
@@ -40,7 +38,7 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
         };
         Vector3 position = Vector3Transform(modelPos, terrainCentering);
 
-        DrawModel(context.tree, position, 0.4f,  WHITE);
+        DrawModel(context.tree, position, 0.05f,  WHITE);
     }
 }
 
