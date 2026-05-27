@@ -117,7 +117,7 @@ glm::vec3 Linear_to_sRGB(glm::vec3 l){
             l[i]=l[i]*12.92;
         }
         else{
-            l[i]=(pow(l[i],(1/2.4)))*1.055-0.055;
+            l[i]=(pow(l[i],(1.f/2.4f)))*1.055-0.055;
         }
     }
     return l;
@@ -176,20 +176,27 @@ void generateHeightmap(AppContext& context) {
     //VERIFIER LES INTERVALLES DES COULEURS CAR RENDU PAS OK
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
 
-              
-    glm::vec3 eau = glm::vec3(70, 130, 200) ;glm::vec3 sable  = glm::vec3(238, 214, 175) ;
-    glm::vec3 herbe = glm::vec3(34, 139, 34) ;
+    glm::vec3 eau_profonde = glm::vec3(10, 40, 120) / 255.f;
+    glm::vec3 eau_claire   = glm::vec3(70, 130, 200) / 255.f;
+
+    glm::vec3 sable_fonce  = glm::vec3(194, 178, 128) / 255.f;
+    glm::vec3 sable_clair  = glm::vec3(238, 214, 175) / 255.f;
+
+    glm::vec3 herbe_claire = glm::vec3(80, 170, 70) / 255.f;
+    glm::vec3 herbe        = glm::vec3(30, 120, 40) / 255.f;
+
+    glm::vec3 foret        = glm::vec3(10, 70, 30) / 255.f;
+
+    glm::vec3 roche        = glm::vec3(120, 120, 120) / 255.f;
     glm::vec3 couleur ; 
-
-
     
 
-        if (v <= 0.01f)
+        if (v <= 0.15f)
         {
-            float pourcentage=0.1f*v; //pourcentage probleme
+            float pourcentage=v/0.15f; //pourcentage probleme plutot mapper entre 0 et 1
             //on transforme en lineare puis OKlab
-            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(eau));
-            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sable));
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(eau_profonde));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(eau_claire));
 
             //transfo en OKLab //problème ici
              Lab mixLab;
@@ -201,11 +208,65 @@ void generateHeightmap(AppContext& context) {
             couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
         
         }
-        else if (v < 0.4f)
+    
+
+        else if (v <= 0.2f)
         {
-            float pourcentage= v*10;
+            float pourcentage=(v-0.15f)/(0.2f-0.15f); //pourcentage probleme plutot mapper entre 0 et 1
             //on transforme en lineare puis OKlab
-            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sable));
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(eau_claire));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sable_clair));
+
+            //transfo en OKLab //problème ici
+             Lab mixLab;
+            mixLab.L = (a.L + pourcentage * (b.L - a.L));
+            mixLab.a = (a.a + pourcentage * (b.a - a.a));
+            mixLab.b = (a.b + pourcentage * (b.b - a.b));
+
+             //interpolation linéaire en OK lab
+            couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
+        
+        }
+
+          else if (v <= 0.25f)
+        {
+            float pourcentage=(v-0.2f)/(0.25f-0.2f); //pourcentage probleme plutot mapper entre 0 et 1
+            //on transforme en lineare puis OKlab
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sable_clair));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sable_fonce));
+
+            //transfo en OKLab //problème ici
+             Lab mixLab;
+            mixLab.L = (a.L + pourcentage * (b.L - a.L));
+            mixLab.a = (a.a + pourcentage * (b.a - a.a));
+            mixLab.b = (a.b + pourcentage * (b.b - a.b));
+
+             //interpolation linéaire en OK lab
+            couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
+        
+        }
+        else if (v < 0.35f)
+        {
+            float pourcentage=(v - 0.25f) / (0.35f - 0.25f); // mapper (0.3 - 0.5) vers (0, 1)
+            //on transforme en lineare puis OKlab
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sable_fonce));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(herbe_claire));
+
+            //transfo en OKLab
+            Lab mixLab;
+            mixLab.L = a.L + pourcentage * (b.L - a.L);
+            mixLab.a = a.a + pourcentage * (b.a - a.a);
+            mixLab.b = a.b + pourcentage * (b.b - a.b);
+    
+             //interpolation linéaire en OK lab
+            couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
+
+        }
+         else if (v < 0.45f)
+        {
+            float pourcentage=(v - 0.35) / (0.45f - 0.35f); // mapper (0.3 - 0.5) vers (0, 1)
+            //on transforme en lineare puis OKlab
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(herbe_claire));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(herbe));
 
             //transfo en OKLab
@@ -213,27 +274,55 @@ void generateHeightmap(AppContext& context) {
             mixLab.L = a.L + pourcentage * (b.L - a.L);
             mixLab.a = a.a + pourcentage * (b.a - a.a);
             mixLab.b = a.b + pourcentage * (b.b - a.b);
+    
+             //interpolation linéaire en OK lab
+            couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
 
+        }
+         else if (v < 0.6f)
+        {
+            float pourcentage=(v - 0.45f) / (0.6f - 0.45f); // mapper (0.3 - 0.5) vers (0, 1)
+            //on transforme en lineare puis OKlab
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(herbe));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(foret));
+
+            //transfo en OKLab
+            Lab mixLab;
+            mixLab.L = a.L + pourcentage * (b.L - a.L);
+            mixLab.a = a.a + pourcentage * (b.a - a.a);
+            mixLab.b = a.b + pourcentage * (b.b - a.b);
+    
+             //interpolation linéaire en OK lab
+            couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
+        }
+         else if (v < 0.8f)
+        {
+            float pourcentage=(v - 0.6f) / (0.8f - 0.6f); // mapper (0.3 - 0.5) vers (0, 1)
+            //on transforme en lineare puis OKlab
+            Lab a = linear_srgb_to_oklab(sRGB_to_Linear(foret));
+            Lab b =linear_srgb_to_oklab(sRGB_to_Linear(roche));
+
+            //transfo en OKLab
+            Lab mixLab;
+            mixLab.L = a.L + pourcentage * (b.L - a.L);
+            mixLab.a = a.a + pourcentage * (b.a - a.a);
+            mixLab.b = a.b + pourcentage * (b.b - a.b);
+    
              //interpolation linéaire en OK lab
             couleur= Linear_to_sRGB(oklab_to_linear_srgb(mixLab));
         }
         else
         {
-           couleur = herbe;
+           couleur = roche;
         }
 
-        //uitlisation de clamp pr rester dans le bon intervalle
+       // uitlisation de clamp pr rester dans le bon intervalle
         //unsigned char car signature Color (cf cette struct)
-    //     return color_from({
-    //     (unsigned char)glm::clamp(couleur.r, 0.f, 255.f),
-    //     (unsigned char)glm::clamp(couleur.g, 0.f, 255.f),
-    //     (unsigned char)glm::clamp(couleur.b, 0.f, 255.f)
-    return color_from({
-    (unsigned char)(v * 255),
-    (unsigned char)(v * 255),
-    (unsigned char)(v * 255)
+       return color_from({
+    (unsigned char)(glm::clamp(couleur.r, 0.f, 1.f) * 255.f),
+    (unsigned char)(glm::clamp(couleur.g, 0.f, 1.f) * 255.f),
+    (unsigned char)(glm::clamp(couleur.b, 0.f, 1.f) * 255.f)
 });
-    // });
 
         
     }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
