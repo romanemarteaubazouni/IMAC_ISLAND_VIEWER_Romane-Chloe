@@ -17,10 +17,31 @@ void draw3DScene(AppContext& context) {
     Vector3 const terrainCenterOffset { terrainCentering.m12, terrainCentering.m13, terrainCentering.m14 };
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawCubes(context, terrainCentering);
+    // drawCubes(context, terrainCentering);
+    drawTrees(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
+}
+
+void drawTrees(AppContext const& context, Matrix const& terrainCentering)
+{
+    if (context.objectPositions.empty()) {
+        return;
+    }
+
+    float const treeHalfHeight { 0.5f * context.treeScale };
+
+    for (glm::vec3 const& pos : context.objectPositions) {
+        Vector3 modelPos = {
+            pos.x * context.terrainSize.x,
+            pos.z * context.terrainSize.y,
+            pos.y * context.terrainSize.z
+        };
+        Vector3 position = Vector3Transform(modelPos, terrainCentering);
+
+        DrawModel(context.tree, position, 0.4f,  WHITE);
+    }
 }
 
 void drawCubes(AppContext const& context, Matrix const& terrainCentering)

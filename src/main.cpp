@@ -27,6 +27,8 @@ int main() {
 
     AppContext context {};
 
+    context.tree = LoadModel("../../resources/tree_small_02_4k.obj");
+
     context.cube = GenMeshCube(1.0f, 1.0f, 1.0f);
     context.cubeMaterial = LoadMaterialDefault();
     context.cubeMaterial.maps[MATERIAL_MAP_DIFFUSE].color = RED;
