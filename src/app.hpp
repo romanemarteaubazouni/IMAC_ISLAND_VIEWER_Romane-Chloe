@@ -45,7 +45,6 @@ struct AppContext {
     // The generated terrain mesh and model.
     Mesh mesh {};
     Model model {};
-    Model village_house{};
 
     std::vector<glm::vec3> objectPositions {};
 
