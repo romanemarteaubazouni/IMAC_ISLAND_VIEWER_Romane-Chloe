@@ -188,6 +188,7 @@ void generateHeightmap(AppContext& context) {
     glm::vec3 foret        = glm::vec3(10, 70, 30) / 255.f;
 
     glm::vec3 roche        = glm::vec3(120, 120, 120) / 255.f;
+
     glm::vec3 couleur ; 
     
 

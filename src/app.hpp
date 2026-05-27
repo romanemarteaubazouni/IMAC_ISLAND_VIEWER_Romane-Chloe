@@ -48,6 +48,7 @@ struct AppContext {
 
     // Parameters for island generation
     ImageGenerationParameters imageGenerationParameters;
+
 };
 
 Matrix getTerrainCenteringMatrix(AppContext const& context);
