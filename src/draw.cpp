@@ -30,6 +30,8 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
         return;
     }
 
+    float angle {0.f};
+
     for (glm::vec3 const& pos : context.objectPositions) {
         Vector3 modelPos = {
             pos.x * context.terrainSize.x,
@@ -37,11 +39,22 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
             pos.y * context.terrainSize.z
         };
         Vector3 position = Vector3Transform(modelPos, terrainCentering);
-        if (position.y > 0.3f) {
-            DrawModel(context.christmasTree, position, 0.03f,  WHITE);
+
+        if (context.pointsGenerationParameters.noChristmasTree) {
+            DrawModelEx(context.normalTree, position, {0, 1, 0}, angle, {0.04f, 0.04f, 0.04f},  WHITE);
+            angle += 20.f;
+        }
+        else if (context.pointsGenerationParameters.noNormalTree) {
+            DrawModel(context.christmasTree, position, 0.04f,  WHITE);
         }
         else {
-            DrawModel(context.normalTree, position, 0.05f,  WHITE);
+            if (position.y > context.pointsGenerationParameters.separation_of_trees) {
+            DrawModel(context.christmasTree, position, 0.04f,  WHITE);
+            }
+            else {
+                DrawModelEx(context.normalTree, position, {0, 1, 0}, angle, {0.04f, 0.04f, 0.04f},  WHITE);
+                angle += 20.f;
+            }
         }
     }
 }
@@ -72,15 +85,36 @@ void drawImGui(AppContext& context) {
         generateObjectsPositions(context);
     }
 
+    if(ImGui::Button("Remove Christmas Trees")) {
+        if (context.pointsGenerationParameters.noChristmasTree) {
+            context.pointsGenerationParameters.noChristmasTree = false;
+        }
+        else {
+            context.pointsGenerationParameters.noChristmasTree = true;
+        }
+        generateObjectsPositions(context);
+    }
+
+    if(ImGui::Button("Remove Normal Trees")) {
+        if (context.pointsGenerationParameters.noNormalTree) {
+            context.pointsGenerationParameters.noNormalTree = false;
+        }
+        else {
+            context.pointsGenerationParameters.noNormalTree = true;
+        }
+        generateObjectsPositions(context);
+    }
+
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
+        ImGui::SliderFloat("Separation of trees", &context.pointsGenerationParameters.separation_of_trees, 0.01f, 1.0f);
     }
 
     if (ImGui::CollapsingHeader("placement", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 1.0f);
+        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 0.5f);
         ImGui::SliderInt("Samples before rejection", &context.pointsGenerationParameters.samples_before_rejection, 10, 100);
         ImGui::SliderInt("Max nb of objects", &context.pointsGenerationParameters.nb_of_points_max, 10, 1500);
-        ImGui::SliderFloat("Minimum z##slider", &context.pointsGenerationParameters.minimum_z, -0.1f, 1.f);
+        ImGui::SliderFloat("Minimum z", &context.pointsGenerationParameters.minimum_z, -0.1f, 1.f);
         ImGui::SliderFloat("Maximum z", &context.pointsGenerationParameters.maximum_z, 0.f, 1.f);
     }
 }

@@ -18,6 +18,11 @@ struct PointsGenerationParameters {
 
     float minimum_z {0.f};
     float maximum_z {1.f};
+
+    // For trees
+    float separation_of_trees {0.8f};
+    bool noNormalTree = false;
+    bool noChristmasTree = false;
 };
 
 struct AppContext {
