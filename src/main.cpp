@@ -27,6 +27,9 @@ int main() {
 
     AppContext context {};
 
+    context.normalTree = LoadModel("../../resources/Lowpoly_tree_sample.obj");
+    context.christmasTree = LoadModel("../../resources/Christmas Tree.obj");
+
     context.cube = GenMeshCube(1.0f, 1.0f, 1.0f);
     context.cubeMaterial = LoadMaterialDefault();
     context.cubeMaterial.maps[MATERIAL_MAP_DIFFUSE].color = RED;

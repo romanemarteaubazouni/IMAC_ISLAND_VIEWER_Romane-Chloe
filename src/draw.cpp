@@ -17,10 +17,43 @@ void draw3DScene(AppContext& context) {
     Vector3 const terrainCenterOffset { terrainCentering.m12, terrainCentering.m13, terrainCentering.m14 };
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawCubes(context, terrainCentering);
+    // drawCubes(context, terrainCentering);
+    drawTrees(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
+}
+
+void drawTrees(AppContext const& context, Matrix const& terrainCentering)
+{
+    if (context.objectPositions.empty()) {
+        return;
+    }
+
+    float angle {0.f};
+
+    for (glm::vec3 const& pos : context.objectPositions) {
+        Vector3 modelPos = {
+            pos.x * context.terrainSize.x,
+            pos.z * context.terrainSize.y,
+            pos.y * context.terrainSize.z
+        };
+        Vector3 position = Vector3Transform(modelPos, terrainCentering);
+        // Régions des sapins
+        if (position.y > context.pointsGenerationParameters.separation_of_trees) {
+            if (!context.pointsGenerationParameters.noChristmasTree) {
+                DrawModelEx(context.christmasTree, position, {0, 1, 0}, 0.0f, {0.04f, context.pointsGenerationParameters.christmasTreeHeight, 0.04f}, WHITE);
+            }
+        }
+        // Régions des arbres normaux
+        else {
+            if (!context.pointsGenerationParameters.noNormalTree) {
+                float treeScale = context.pointsGenerationParameters.normalTreeHeight;
+                DrawModelEx(context.normalTree, position, {0, 1, 0}, angle, {treeScale, treeScale, treeScale},  WHITE);
+                angle += 20.f;
+            }
+        }
+    }
 }
 
 void drawCubes(AppContext const& context, Matrix const& terrainCentering)
@@ -49,6 +82,14 @@ void drawImGui(AppContext& context) {
         generateObjectsPositions(context);
     }
 
+    if(ImGui::Button("Remove Christmas Trees")) {
+        context.pointsGenerationParameters.noChristmasTree = !context.pointsGenerationParameters.noChristmasTree;
+    }
+
+    if(ImGui::Button("Remove Normal Trees")) {
+        context.pointsGenerationParameters.noNormalTree = !context.pointsGenerationParameters.noNormalTree;
+    }
+
      if(ImGui::Button("Generate heightmap")) {
          generateHeightmap(context);
         regenerateMeshFromImage(context);
@@ -57,16 +98,13 @@ void drawImGui(AppContext& context) {
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
-
-         
-         
     }
 
     if (ImGui::CollapsingHeader("placement", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 1.0f);
+        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 0.5f);
         ImGui::SliderInt("Samples before rejection", &context.pointsGenerationParameters.samples_before_rejection, 10, 100);
         ImGui::SliderInt("Max nb of objects", &context.pointsGenerationParameters.nb_of_points_max, 10, 1500);
-        ImGui::SliderFloat("Minimum z##slider", &context.pointsGenerationParameters.minimum_z, -0.1f, 1.f);
+        ImGui::SliderFloat("Minimum z", &context.pointsGenerationParameters.minimum_z, -0.1f, 1.f);
         ImGui::SliderFloat("Maximum z", &context.pointsGenerationParameters.maximum_z, 0.f, 1.f);
     }
 }

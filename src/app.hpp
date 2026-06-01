@@ -22,6 +22,14 @@ struct PointsGenerationParameters {
 
     float minimum_z {0.f};
     float maximum_z {1.f};
+
+    // For trees
+    float separation_of_trees {0.8f};
+    bool noNormalTree = false;
+    bool noChristmasTree = false;
+
+    float christmasTreeHeight {0.04f};
+    float normalTreeHeight {0.04f};
 };
 
 struct AppContext {
@@ -43,6 +51,9 @@ struct AppContext {
     Model model {};
 
     std::vector<glm::vec3> objectPositions {};
+
+    Model normalTree {};
+    Model christmasTree {};
 
     // A simple cube mesh and material we use to draw objects on the terrain.
     Mesh cube {};
