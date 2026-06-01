@@ -6,8 +6,12 @@
 
 struct ImageGenerationParameters {
     int noiseSeed { 0 };
-    float noiseScale { 4.0f };
+    float noiseScale { 10.0f };
     int resolution { 256 };
+
+    float lacu{1.701f};
+    int oct{26};
+    float gain{0.092f};
 };
 
 struct PointsGenerationParameters {
@@ -50,6 +54,7 @@ struct AppContext {
 
     // Parameters for island generation
     ImageGenerationParameters imageGenerationParameters;
+
 };
 
 Matrix getTerrainCenteringMatrix(AppContext const& context);

@@ -49,8 +49,17 @@ void drawImGui(AppContext& context) {
         generateObjectsPositions(context);
     }
 
+     if(ImGui::Button("Generate heightmap")) {
+         generateHeightmap(context);
+        regenerateMeshFromImage(context);
+       
+    }
+
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
+
+         
+         
     }
 
     if (ImGui::CollapsingHeader("placement", ImGuiTreeNodeFlags_DefaultOpen)) {
