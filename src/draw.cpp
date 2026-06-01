@@ -48,7 +48,8 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
         // Régions des arbres normaux
         else {
             if (!context.pointsGenerationParameters.noNormalTree) {
-                DrawModelEx(context.normalTree, position, {0, 1, 0}, angle, {0.04f, context.pointsGenerationParameters.normalTreeHeight, 0.04f},  WHITE);
+                float treeScale = context.pointsGenerationParameters.normalTreeHeight;
+                DrawModelEx(context.normalTree, position, {0, 1, 0}, angle, {treeScale, treeScale, treeScale},  WHITE);
                 angle += 20.f;
             }
         }
@@ -92,7 +93,7 @@ void drawImGui(AppContext& context) {
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         // ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
         ImGui::SliderFloat("Christmas Trees Scale", &context.pointsGenerationParameters.christmasTreeHeight, 0.03f, 0.1f);
-        ImGui::SliderFloat("Normal Trees Scale", &context.pointsGenerationParameters.normalTreeHeight, 0.03f, 0.06f);
+        ImGui::SliderFloat("Normal Trees Scale", &context.pointsGenerationParameters.normalTreeHeight, 0.05f, 0.07f);
         ImGui::SliderFloat("Separation of trees", &context.pointsGenerationParameters.separation_of_trees, 0.01f, 1.0f);
     }
 
