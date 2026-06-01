@@ -81,6 +81,11 @@ void drawImGui(AppContext& context) {
     if(ImGui::Button("Generate random positions")) {
         generateObjectsPositions(context);
     }
+    
+    if(ImGui::Button("Generate heightmap")) {
+        generateHeightmap(context);
+        regenerateMeshFromImage(context);
+    }
 
     if(ImGui::Button("Remove Christmas Trees")) {
         context.pointsGenerationParameters.noChristmasTree = !context.pointsGenerationParameters.noChristmasTree;
@@ -90,14 +95,17 @@ void drawImGui(AppContext& context) {
         context.pointsGenerationParameters.noNormalTree = !context.pointsGenerationParameters.noNormalTree;
     }
 
-     if(ImGui::Button("Generate heightmap")) {
-         generateHeightmap(context);
-        regenerateMeshFromImage(context);
-       
+    if (ImGui::CollapsingHeader("heightmap", ImGuiTreeNodeFlags_DefaultOpen)) {
+         ImGui::SliderFloat("Noise scale", &context.imageGenerationParameters.noiseScale, 0.01f, 10.0f);
+         ImGui::SliderFloat("Noise gain", &context.imageGenerationParameters.gain, 0.01f, 10.0f);
+         ImGui::SliderFloat("Noise lacu", &context.imageGenerationParameters.lacu, 1.f, 10.0f);
+         ImGui::SliderInt("Noise resolution", &context.imageGenerationParameters.oct, 1.f, 100.0f);         
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
+        ImGui::SliderFloat("Christmas Trees Scale", &context.pointsGenerationParameters.christmasTreeHeight, 0.03f, 0.1f);
+        ImGui::SliderFloat("Normal Trees Scale", &context.pointsGenerationParameters.normalTreeHeight, 0.05f, 0.07f);
+        ImGui::SliderFloat("Separation of trees", &context.pointsGenerationParameters.separation_of_trees, 0.01f, 1.0f);
     }
 
     if (ImGui::CollapsingHeader("placement", ImGuiTreeNodeFlags_DefaultOpen)) {
