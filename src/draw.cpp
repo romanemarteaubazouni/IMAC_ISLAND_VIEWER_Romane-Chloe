@@ -40,7 +40,7 @@ void drawTrees(AppContext const& context, Matrix const& terrainCentering)
         };
         Vector3 position = Vector3Transform(modelPos, terrainCentering);
         // Régions des sapins
-        if (position.y > context.pointsGenerationParameters.separation_of_trees) {
+        if (position.y >= context.pointsGenerationParameters.separation_of_trees) {
             if (!context.pointsGenerationParameters.noChristmasTree) {
                 DrawModelEx(context.christmasTree, position, {0, 1, 0}, 0.0f, {0.04f, context.pointsGenerationParameters.christmasTreeHeight, 0.04f}, WHITE);
             }
@@ -105,15 +105,15 @@ void drawImGui(AppContext& context) {
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Christmas Trees Scale", &context.pointsGenerationParameters.christmasTreeHeight, 0.03f, 0.1f);
         ImGui::SliderFloat("Normal Trees Scale", &context.pointsGenerationParameters.normalTreeHeight, 0.05f, 0.07f);
-        ImGui::SliderFloat("Separation of trees", &context.pointsGenerationParameters.separation_of_trees, 0.01f, 1.0f);
+        ImGui::SliderFloat("Separation of trees", &context.pointsGenerationParameters.separation_of_trees, 0.01f, 2.0f);
     }
 
     if (ImGui::CollapsingHeader("placement", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 0.5f);
+        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01f, 0.3f);
         ImGui::SliderInt("Samples before rejection", &context.pointsGenerationParameters.samples_before_rejection, 10, 100);
         ImGui::SliderInt("Max nb of objects", &context.pointsGenerationParameters.nb_of_points_max, 10, 1500);
-        ImGui::SliderFloat("Minimum z", &context.pointsGenerationParameters.minimum_z, -0.1f, 1.f);
-        ImGui::SliderFloat("Maximum z", &context.pointsGenerationParameters.maximum_z, 0.f, 1.f);
+        ImGui::SliderFloat("Minimum z", &context.pointsGenerationParameters.minimum_z, 0.f, 1.f);
+        ImGui::SliderFloat("Maximum z", &context.pointsGenerationParameters.maximum_z, 0.f, 2.f);
     }
 }
 
