@@ -203,9 +203,9 @@ void generateHeightmap(AppContext& context) {
     }
 
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
-    int oct {100};
-    float lacu {0.2f};
-    float gain {0.3f};
+    // int oct {100};
+    // float lacu {0.2f};
+    // float gain {0.3f};
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float { //c'est des coordonnées
             //on doit calculer distance au centre

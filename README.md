@@ -2,7 +2,7 @@
 
 # Rapport de projet
 
-**Projet réalisé par :** Romane Marteau et Chloé Chabaud
+**Projet réalisé par :** Romane Marteau et Chloé Chabaud et devellopé sous Windows.
 
 ---
 
@@ -64,6 +64,40 @@ Le terrain final est obtenu en multipliant :
 
 ---
 
+###A MODIFIER ( ajoute les valeurs pour arbre et tout)
+
+## Paramètres fixés
+
+### Génération de la map
+
+#### Noise scale
+
+Contrôle les bosses et le dénivelé.  
+Pertinent entre 0 et 10.  
+Ce curseur permet de créer des îles différentes (plus ou moins de sommets et de hauteurs différentes).
+
+---
+
+#### Gain
+
+Plage : `[0, 0.6]`  
+Contrôle la contribution de chaque octave au bruit.  
+Au-delà de 0.6, la map devient trop bruitée et n’est plus lisible.
+
+---
+
+#### Noise lacunarity
+
+Plage : `[0, 1.7]`  
+Contrôle l’augmentation de la fréquence entre les octaves (donc le niveau de détail).  
+Au-delà de 1.7, la map devient également trop bruitée.
+
+---
+
+#### Noise resolution
+
+Pertinent visuellement sur une plage de 0 à 10.
+
 ### Difficultés rencontrées
 
 J’ai eu beaucoup de mal à commencer, mais j’ai reçu l’aide d’Agathe, qui m’a expliqué le concept et j’ai pu commencer. J’ai galéré à trouver par quoi il fallait multiplier au début.
@@ -114,6 +148,8 @@ Le but était d’obtenir une map la plus harmonieuse possible : si la carte est
 
 ---
 
+### AJOUTE SI T AS DES TRUCS A DIRE
+
 ## Organisation du travail
 
 Nous sommes parties sur deux questions chacune, avec des points de rendez-vous réguliers pour montrer l’avancement du projet, demander des avis et poser des questions.
@@ -131,3 +167,7 @@ Romane a effectué une branche par question ( 3 en tout avec amélioration) : 1 
 Nous faisions des commits réguliers sur la branche principale (main), puis nous avons décidé de merger uniquement à la fin du projet et de gérer les conflits ensemble.
 
 Enfin le marge final a été fait ensemble sur le pc de Romane pour régler ensemble les conflicts
+
+### A MODIFIER
+
+## Post mortem :
