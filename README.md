@@ -64,8 +64,6 @@ Le terrain final est obtenu en multipliant :
 
 ---
 
-###A MODIFIER ( ajoute les valeurs pour arbre et tout)
-
 ## Paramètres fixés
 
 ### Génération de la map
@@ -98,6 +96,7 @@ Au-delà de 1.7, la map devient également trop bruitée.
 
 Pertinent visuellement sur une plage de 0 à 10.
 
+---
 ### Difficultés rencontrées
 
 J’ai eu beaucoup de mal à commencer, mais j’ai reçu l’aide d’Agathe, qui m’a expliqué le concept et j’ai pu commencer. J’ai galéré à trouver par quoi il fallait multiplier au début.
@@ -138,18 +137,31 @@ On peut choisir les valeurs d'altitude z (min ou max), ce qui permet de contrôl
 
 J’ai importé deux meshs 3D (deux types d’arbres : des sapins et arbres assez normaux) avec l’aide de Kellian, séparés en fonction des valeurs de z. Les meshs ont été trouvés sur [Free3D](https://www.free3D.com). Ce sont des fichiers .obj triangulés avec des fichiers .mtl pour les textures et couleurs.
 
-La difficulté venait du fait que les meshs de base n’étaient pas tous en .obj et étaient pour certains très lourds, ce qui compliquait leur intégration.
+Chaque arbre normal a une orientation différente (les sapins, non, puisqu'ils sont uniformes dans leur forme). On peut modifier leur taille et leur emplacement.
+
+---
+## Difficultés rencontrées
+
+Le code de Poisson Disk Sampling est celui qui m'a pris le plus de temps. J'ai, comme dit au dessus, passé du temps sur les deux vidéos et donc perdu beaucoup d'énergie à essayer de traduire le code Java en C++.
+
+L'importation des meshs 3D a été compliquée au début à cause du format des fichiers .obj. Le principe n'a pas posé trop problème. La difficulté venait aussi du fait que les meshs étaient pour certains très lourds, ce qui compliquait leur intégration.
 
 ---
 ## Paramètres fixés
 
-### Placement des arbres
+#### Objets
 
-Les sapins sont placés en altitude et les arbres normaux en bas. Cette séparation peut être modifiée en fonction de la map grâce à un slider (separation_of_trees) : si les montagnes sont basses, on peut baisser l’altitude des sapins ou même les faire disparaître avec un bouton (remove christmas trees). Remarquez qu'on peut aussi faire disparaitre les arbres normaux pour donner un air de montagne à l'île.
+- Hauteur des sapins entre 0.03 et 0.1 : pertinent visuellement en fonction de la hauteur de l'île
+- Hauteur des arbres entre 0.05 et 0.7
+- Altitude au delà de laquelle il n'y a que des sapins entre 0.01 et 2
 
-Il est aussi possible de changer la taille des arbres normaux et la hauteur des sapins.
+---
 
-Le but était d’obtenir une map la plus harmonieuse possible : si la carte est très dense, on peut réduire les arbres ; si elle est trop basse, on peut ajuster les sapins, afin de permettre à l’utilisateur de vraiment façonner son île.
+#### Placement des objets
+
+- Rayon d'espcement des objets entre 0 et 0.3 car à partir de 0.5, il ne reste plus que 2 à 3 objets environ
+- Nombre maximal d'objets sur l'île entre 10 et 1500
+- Altitudes minimales et maximales de placement des arbres
 
 ---
 
