@@ -97,9 +97,9 @@ void drawImGui(AppContext& context) {
 
     if (ImGui::CollapsingHeader("heightmap", ImGuiTreeNodeFlags_DefaultOpen)) {
          ImGui::SliderFloat("Noise scale", &context.imageGenerationParameters.noiseScale, 0.01f, 10.0f);
-         ImGui::SliderFloat("Noise gain", &context.imageGenerationParameters.gain, 0.01f, 10.0f);
-         ImGui::SliderFloat("Noise lacu", &context.imageGenerationParameters.lacu, 1.f, 10.0f);
-         ImGui::SliderInt("Noise resolution", &context.imageGenerationParameters.oct, 1.f, 100.0f);         
+         ImGui::SliderFloat("Noise gain", &context.imageGenerationParameters.gain, 0.01f, 0.60f);
+         ImGui::SliderFloat("Noise lacu", &context.imageGenerationParameters.lacu, 1.f, 1.70f);
+         ImGui::SliderInt("Noise resolution", &context.imageGenerationParameters.oct, 1.f, 10.0f);         
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {

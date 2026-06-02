@@ -124,7 +124,7 @@ float sampleHeightmap(AppContext const& context, float u, float v)
 ///////////////////////////////////////////////////////////////////////////////
 struct Lab{ float L; float a; float b;};
 Lab linear_srgb_to_oklab(glm::vec3 c){
-            //transfo oklab
+ //Transfo oklab
         float l = 0.4122214708f * c.r + 0.5363325363f * c.g + 0.0514459929f * c.b;
 	    float m = 0.2119034982f * c.r + 0.6806995451f * c.g + 0.1073969566f * c.b;
         float s = 0.0883024619f * c.r + 0.2817188376f * c.g + 0.6299787005f * c.b;
@@ -140,7 +140,7 @@ Lab linear_srgb_to_oklab(glm::vec3 c){
 }
 
 
-//on revient en RGB
+//On revient en RGB
 glm::vec3 oklab_to_linear_srgb(Lab c){
     float l_ = c.L + 0.3963377774f * c.a + 0.2158037573f * c.b;
     float m_ = c.L - 0.1055613458f * c.a - 0.0638541728f * c.b;
@@ -208,10 +208,6 @@ void generateHeightmap(AppContext& context) {
     float gain {0.3f};
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float { //c'est des coordonnées
-            // int oct {10};
-            // float lacu {0.6f};
-            // float gain {0.2f};
-            // TODO(student): implement stack based noise and island mask
             //on doit calculer distance au centre
 
             glm::vec2 const centre = {0.5f, 0.5f};
@@ -233,9 +229,7 @@ void generateHeightmap(AppContext& context) {
 
 
 
-        
-    // exemple conversion from heightmap to color image
-    //VERIFIER LES INTERVALLES DES COULEURS CAR RENDU PAS OK
+    
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
 
     glm::vec3 eau_profonde = glm::vec3(10, 40, 120) / 255.f;
