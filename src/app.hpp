@@ -20,11 +20,11 @@ struct PointsGenerationParameters {
     int nb_of_points_max {1000};
     glm::vec2 sample_region_size {1.f, 1.f};
 
-    float minimum_z {0.f};
+    float minimum_z {0.1f};
     float maximum_z {1.f};
 
     // For trees
-    float separation_of_trees {0.8f};
+    float separation_of_trees {1.f};
     bool noNormalTree = false;
     bool noChristmasTree = false;
 
