@@ -129,6 +129,8 @@ Cette méthode permet de générer des points répartis de manière uniforme, av
 
 Les deux questions sur les objets ont été réalisées sans la map de Chloé, donc avec une île assez moche (très plate). D’où les sliders minimum_z et maximum_z qui sont dans des plages de valeurs très larges pour pouvoir s'adapter à n'importe quelle île.
 
+<img src="screenshots/island_phase1.png" alt="Banner" width="500" style="display:block;margin:auto;">
+
 On peut choisir les valeurs d'altitude z (min ou max), ce qui permet de contrôler le placement des objets.
 
 ---
