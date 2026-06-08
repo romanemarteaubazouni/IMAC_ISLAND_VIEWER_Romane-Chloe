@@ -2,11 +2,11 @@
 
 # Rapport de projet
 
-**Projet réalisé par :** Romane Marteau et Chloé Chabaud et devellopé sous Windows.
+**Projet réalisé par :** Romane MARTEAU--BAZOUNI et Chloé CHABAUD et développé sous Windows.
 
 ---
 
-## Question 1 — Bruit fractal (Octave Noise) (Chloé)
+## Question 1 - Bruit fractal (Octave Noise) (Chloé)
 
 J’ai utilisé le premier document fourni dans le sujet :  
 https://thebookofshaders.com/13/?lan=fr
@@ -41,7 +41,7 @@ En fait, en mettant une amplitude < 1, je multipliais par ce facteur à chaque o
 
 ---
 
-## Question 2 — Génération de heightmap et couleurs (Chloé)
+## Question 2 - Génération de heightmap et couleurs (Chloé)
 
 But : générer une couleur en fonction de la hauteur du point et de sa distance au centre.
 
@@ -63,8 +63,6 @@ Le terrain final est obtenu en multipliant :
 • le masque donne la structure d’île
 
 ---
-
-###A MODIFIER ( ajoute les valeurs pour arbre et tout)
 
 ## Paramètres fixés
 
@@ -98,6 +96,7 @@ Au-delà de 1.7, la map devient également trop bruitée.
 
 Pertinent visuellement sur une plage de 0 à 10.
 
+---
 ### Difficultés rencontrées
 
 J’ai eu beaucoup de mal à commencer, mais j’ai reçu l’aide d’Agathe, qui m’a expliqué le concept et j’ai pu commencer. J’ai galéré à trouver par quoi il fallait multiplier au début.
@@ -114,45 +113,63 @@ J’ai eu longtemps des problèmes avec les intervalles des vecteurs de couleurs
 
 ---
 
-## Question 3 — Poisson Disk (Romane)
+## Question 3 - Poisson Disk (Romane)
 
 J’ai eu plusieurs problèmes dans la compréhension de l’algorithme.
 
-Une première vidéo (https://www.youtube.com/watch?v=flQgnCUxHlw) m’a aidée à comprendre pas à pas le papier de recherche. Le code était tout de même truffé de fautes et écrit dans un langage Processing que je ne maîtrisais pas trop, avec l'aide de Benoit j'ai pu cependant corriger les erreurs.
+Une première vidéo (https://www.youtube.com/watch?v=flQgnCUxHlw) m’a aidée à comprendre pas à pas le papier de recherche. Le code était tout de même truffé de fautes et écrit dans un langage Processing que je ne maîtrisais pas trop. Cependant, avec l'aide de Benoit, j'ai pu corriger la plupart des erreurs et comprendre plus en profondeur la structure utilisée.
 
-J’ai donc choisi de suivre une deuxième vidéo (https://www.youtube.com/watch?v=7WcmyxyFO7o) pour avoir les bonnes méthodes et les bonnes pratiques.
+Pour finir mon code, j’ai donc choisi de suivre une deuxième vidéo (https://www.youtube.com/watch?v=7WcmyxyFO7o) pour avoir les bonnes méthodes et les bonnes pratiques.
 
-Cette méthode permet de générer des points répartis de manière uniforme, avec la possibilité de réduire ou augmenter le nombre de points, ainsi que de modifier le rayon.
-
----
-
-## Question 4 — Placement des objets (Romane)
-
-Les deux questions sur les objets ont été réalisées sans la map de Chloé, donc avec une île assez moche (très plate). D’où les sliders minimum_z qui commencent dans le négatif pour permettre de placer des arbres jusqu’à la base de la map.
-
-On peut choisir les valeurs de z (min ou max), ce qui permet de contrôler où les objets apparaissent.
+Cette méthode permet de générer des points répartis de manière uniforme, avec la possibilité de réduire ou augmenter le nombre de points, ainsi que de modifier le rayon d'espacement
 
 ---
 
-### Améliorations (Romane)
+## Question 4 - Placement des objets (Romane)
 
-J’ai importé deux meshes 3D (deux types d’arbres) avec l’aide de Kellian, séparés en fonction des valeurs de z. Les meshes ont été trouvés sur free3D.fr. Ce sont des fichiers .obj triangulés avec des fichiers .mtl pour les textures et couleurs.
+Les deux questions sur les objets ont été réalisées sans la map de Chloé, donc avec une île assez moche (très plate). D’où les sliders minimum_z et maximum_z qui sont dans des plages de valeurs très larges pour pouvoir s'adapter à n'importe quelle île.
 
-La difficulté venait du fait que les meshes de base n’étaient pas tous en .obj et étaient très lourds, ce qui compliquait leur intégration.
+<img src="screenshots/island_phase1.png" alt="Banner" width="500" style="display:block;margin:auto;">
 
-Les sapins sont placés en altitude et les arbres normaux en bas. Cette séparation peut être modifiée en fonction de la map : si les montagnes sont basses, on peut baisser l’altitude des sapins ou même les faire disparaître avec un bouton.
-
-Il est aussi possible de changer la taille des arbres.
-
-Le but était d’obtenir une map la plus harmonieuse possible : si la carte est très dense, on peut réduire les arbres, si elle est trop basse, on peut ajuster les sapins, afin de permettre à l’utilisateur de vraiment façonner son île.
+On peut choisir les valeurs d'altitude z (min ou max), ce qui permet de contrôler le placement des objets.
 
 ---
 
-### AJOUTE SI T AS DES TRUCS A DIRE
+## Question 5 - Améliorations (Romane)
+
+J’ai importé deux meshs 3D (deux types d’arbres : des sapins et arbres assez normaux) avec l’aide de Kellian, séparés en fonction des valeurs de z. Les meshs ont été trouvés sur [Free3D](https://www.free3D.com). Ce sont des fichiers .obj triangulés avec des fichiers .mtl pour les textures et couleurs.
+
+Chaque arbre normal a une orientation différente (les sapins, non, puisqu'ils sont uniformes dans leur forme). On peut modifier leur taille et leur emplacement.
+
+---
+## Difficultés rencontrées
+
+Le code de Poisson Disk Sampling est celui qui m'a pris le plus de temps. J'ai, comme dit au dessus, passé du temps sur les deux vidéos et donc perdu beaucoup d'énergie à essayer de traduire le code Java en C++.
+
+L'importation des meshs 3D a été compliquée au début à cause du format des fichiers .obj. Le principe n'a pas posé trop problème. La difficulté venait aussi du fait que les meshs étaient pour certains très lourds, ce qui compliquait leur intégration.
+
+---
+## Paramètres fixés
+
+#### Objets
+
+- Hauteur des sapins entre 0.03 et 0.1 : pertinent visuellement en fonction de la hauteur de l'île
+- Hauteur des arbres entre 0.05 et 0.7
+- Altitude au delà de laquelle il n'y a que des sapins entre 0.01 et 2
+
+---
+
+#### Placement des objets
+
+- Rayon d'espcement des objets entre 0 et 0.3 car à partir de 0.5, il ne reste plus que 2 à 3 objets environ
+- Nombre maximal d'objets sur l'île entre 10 et 1500
+- Altitudes minimales et maximales de placement des arbres
+
+---
 
 ## Organisation du travail
 
-Nous sommes parties sur deux questions chacune, avec des points de rendez-vous réguliers pour montrer l’avancement du projet, demander des avis et poser des questions.
+Nous sommes parties sur environ deux questions chacune, avec des points de rendez-vous réguliers pour montrer l’avancement du projet, demander des avis et poser des questions.
 
 ---
 
