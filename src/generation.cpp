@@ -203,9 +203,7 @@ void generateHeightmap(AppContext& context) {
     }
 
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
-    // int oct {100};
-    // float lacu {0.2f};
-    // float gain {0.3f};
+
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float { //c'est des coordonnées
             //on doit calculer distance au centre
@@ -223,7 +221,7 @@ void generateHeightmap(AppContext& context) {
                  masque= pow(1.f-d,2);
              } //au carré car sinon masque trop faible
              float n=octaveNoise(p, perlinNoise, context.imageGenerationParameters.oct, context.imageGenerationParameters.lacu,context.imageGenerationParameters.gain, context.imageGenerationParameters.noiseSeed, context.imageGenerationParameters.noiseScale);
-             n = (n + 1.f) * 0.5f; // on normalise ici A VOIR PQ
+             n = (n + 1.f) * 0.5f; // on normalise 
             return masque*n;
         });
 
@@ -250,7 +248,7 @@ void generateHeightmap(AppContext& context) {
 
         if (v <= 0.15f)
         {
-            float pourcentage=v/0.15f; //pourcentage probleme plutot mapper entre 0 et 1
+            float pourcentage=v/0.15f; 
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(eau_profonde));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(eau_claire));
@@ -269,7 +267,7 @@ void generateHeightmap(AppContext& context) {
 
         else if (v <= 0.2f)
         {
-            float pourcentage=(v-0.15f)/(0.2f-0.15f); //pourcentage probleme plutot mapper entre 0 et 1
+            float pourcentage=(v-0.15f)/(0.2f-0.15f); //pourcentage 
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(eau_claire));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sable_clair));
@@ -287,7 +285,7 @@ void generateHeightmap(AppContext& context) {
 
           else if (v <= 0.25f)
         {
-            float pourcentage=(v-0.2f)/(0.25f-0.2f); //pourcentage probleme plutot mapper entre 0 et 1
+            float pourcentage=(v-0.2f)/(0.25f-0.2f);
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(sable_clair));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(sable_fonce));
@@ -321,7 +319,7 @@ void generateHeightmap(AppContext& context) {
         }
          else if (v < 0.45f)
         {
-            float pourcentage=(v - 0.35) / (0.45f - 0.35f); // mapper (0.3 - 0.5) vers (0, 1)
+            float pourcentage=(v - 0.35) / (0.45f - 0.35f); // mapper (0.35 - 0.45) vers (0, 1)
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(herbe_claire));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(herbe));
@@ -338,7 +336,7 @@ void generateHeightmap(AppContext& context) {
         }
          else if (v < 0.6f)
         {
-            float pourcentage=(v - 0.45f) / (0.6f - 0.45f); // mapper (0.3 - 0.5) vers (0, 1)
+            float pourcentage=(v - 0.45f) / (0.6f - 0.45f); // mapper (0.45 - 0.6) vers (0, 1)
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(herbe));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(foret));
@@ -354,7 +352,7 @@ void generateHeightmap(AppContext& context) {
         }
          else if (v < 0.8f)
         {
-            float pourcentage=(v - 0.6f) / (0.8f - 0.6f); // mapper (0.3 - 0.5) vers (0, 1)
+            float pourcentage=(v - 0.6f) / (0.8f - 0.6f); // idem
             //on transforme en lineare puis OKlab
             Lab a = linear_srgb_to_oklab(sRGB_to_Linear(foret));
             Lab b =linear_srgb_to_oklab(sRGB_to_Linear(roche));
