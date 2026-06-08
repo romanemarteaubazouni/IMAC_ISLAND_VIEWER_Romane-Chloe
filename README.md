@@ -35,7 +35,7 @@ On construit le résultat avec le bruit à une certaine fréquence, pondéré pa
 
 ### Problème rencontré
 
-Au début, j’avais mis une amplitude < 1. Le bruit “fonctionnait”, jusqu’à ce que j’ajoute les couleurs, où j’ai eu un gros problème que j’ai eu du mal à retrouver. J'avais ce résultat : ![](./resources/loupé1.png)
+Au début, j’avais mis une amplitude < 1. Le bruit “fonctionnait”, jusqu’à ce que j’ajoute les couleurs, où j’ai eu un gros problème que j’ai eu du mal à retrouver. J'avais ce résultat : ![](./screenshots/loupé1.png)
 
 En fait, en mettant une amplitude < 1, je multipliais par ce facteur à chaque octave, donc je réduisais fortement le signal, ce qui donnait un effet inattendu en fonction de la hauteur (zones trop sombres et/ou mal réparties).
 
@@ -61,6 +61,11 @@ Le terrain final est obtenu en multipliant :
 
 • le bruit donne la forme  
 • le masque donne la structure d’île
+
+Concernant les couleurs, on voulait un dégradé propre donc on a réutilisé la methode de dégradés dans l'espace de couleur Lab ( utilisé dans le workshop de Jules) : Conversion des couleurs vers un espace perceptuel (Oklab) .
+Interpolation des composantes dans cet espace perceptuel.
+Conversion du résultat vers Linear RGB.
+Il fallait donc adapter cette méthode.
 
 ---
 
@@ -97,11 +102,10 @@ Au-delà de 1.7, la map devient également trop bruitée.
 Pertinent visuellement sur une plage de 0 à 10.
 
 ---
+
 ### Difficultés rencontrées
 
 J’ai eu beaucoup de mal à commencer, mais j’ai reçu l’aide d’Agathe, qui m’a expliqué le concept et j’ai pu commencer. J’ai galéré à trouver par quoi il fallait multiplier au début.
-
-Concernant les couleurs, on voulait un dégradé propre donc on a réutilisé la methode de dégradés dans l'espace de couleur Lab ( utilisé dans le workshop de Jules). Il fallait donc adapter cette méthode.
 
 J’ai créé des plages de couleurs, et j’en ai ajouté ensuite avec différentes teintes pour avoir un meilleur rendu.
 
@@ -110,6 +114,9 @@ J’ai créé des plages de couleurs, et j’en ai ajouté ensuite avec différe
 ### Problèmes rencontrés
 
 J’ai eu longtemps des problèmes avec les intervalles des vecteurs de couleurs qui devaient passer dans les fonctions, je m’emmêlais. Puis, pour le pourcentage appliqué, il fallait mapper en fonction de l’intervalle où on se trouvait (solution trouvée grâce à Jules). Je suis passée par énormément de couleurs non voulues avant d’avoir un résultat satisfaisant.
+Quelques résultats non concluant, dû à des erreurs de valeurs ( en dehors de l'intervalle nécessaires par ex):
+![](./screenshots/loupé_couleur.png)
+![](./screenshots/loupé_couleur2.png)
 
 ---
 
@@ -142,6 +149,7 @@ J’ai importé deux meshs 3D (deux types d’arbres : des sapins et arbres asse
 Chaque arbre normal a une orientation différente (les sapins, non, puisqu'ils sont uniformes dans leur forme). On peut modifier leur taille et leur emplacement.
 
 ---
+
 ## Difficultés rencontrées
 
 Le code de Poisson Disk Sampling est celui qui m'a pris le plus de temps. J'ai, comme dit au dessus, passé du temps sur les deux vidéos et donc perdu beaucoup d'énergie à essayer de traduire le code Java en C++.
@@ -149,6 +157,7 @@ Le code de Poisson Disk Sampling est celui qui m'a pris le plus de temps. J'ai, 
 L'importation des meshs 3D a été compliquée au début à cause du format des fichiers .obj. Le principe n'a pas posé trop problème. La difficulté venait aussi du fait que les meshs étaient pour certains très lourds, ce qui compliquait leur intégration.
 
 ---
+
 ## Paramètres fixés
 
 #### Objets
@@ -184,7 +193,5 @@ Romane a effectué une branche par question ( 3 en tout avec amélioration) : 1 
 Nous faisions des commits réguliers sur la branche principale (main), puis nous avons décidé de merger uniquement à la fin du projet et de gérer les conflits ensemble.
 
 Enfin le marge final a été fait ensemble sur le pc de Romane pour régler ensemble les conflicts
-
-### A MODIFIER
 
 ## Post mortem :
