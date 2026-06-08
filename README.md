@@ -178,7 +178,7 @@ L'importation des meshs 3D a été compliquée au début à cause du format des 
 
 ## Organisation du travail
 
-Nous sommes parties sur environ deux questions chacune, avec des points de rendez-vous réguliers pour montrer l’avancement du projet, demander des avis et poser des questions.
+Nous sommes parties sur environ deux questions chacune, avec des points de rendez-vous réguliers pour montrer l’avancement du projet, demander des avis et poser des questions. Ce fonctionnement nous a convenu, en effet nous avions du mal à programmer à 2 en même temps/la même chose.
 
 ---
 
@@ -194,4 +194,8 @@ Nous faisions des commits réguliers sur la branche principale (main), puis nous
 
 Enfin le marge final a été fait ensemble sur le pc de Romane pour régler ensemble les conflicts
 
-## Post mortem :
+## Axes d'amélioration
+
+- Ajouter un masque non linéaire, pour un meilleur ou effet différent.
+- Développer plusieurs modes de couleur associés à des meshs 3D spécifiques (par exemple : saisons, planètes, environnements etc.).
+- Introduire des variations temporelles en faisant évoluer certains paramètres du rendu au cours du temps (couleurs, formes, animations meshs, effets visuels, etc.).
