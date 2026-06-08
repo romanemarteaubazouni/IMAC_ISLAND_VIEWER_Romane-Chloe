@@ -14,7 +14,7 @@ https://thebookofshaders.com/13/?lan=fr
 L’objectif de cette fonction est de générer un relief naturel (type terrain ou île) en combinant plusieurs couches de bruit.
 
 Les octaves sont une version de bruit à différentes échelles :  
-• les premières octaves donnent les grosses formes du terrain (montagnes, continents)  
+• les premières octaves donnent les grosses formes du terrain (montagnes, iles)  
 • les octaves suivantes ajoutent des détails de plus en plus fins
 
 Au final, on superpose tout ça pour obtenir un terrain plus naturel.
@@ -35,7 +35,7 @@ On construit le résultat avec le bruit à une certaine fréquence, pondéré pa
 
 ### Problème rencontré
 
-Au début, j’avais mis une amplitude < 1. Le bruit “fonctionnait”, jusqu’à ce que j’ajoute les couleurs, où j’ai eu un gros problème que j’ai eu du mal à retrouver.
+Au début, j’avais mis une amplitude < 1. Le bruit “fonctionnait”, jusqu’à ce que j’ajoute les couleurs, où j’ai eu un gros problème que j’ai eu du mal à retrouver. J'avais ce résultat : ![](./resources/loupé1.png)
 
 En fait, en mettant une amplitude < 1, je multipliais par ce facteur à chaque octave, donc je réduisais fortement le signal, ce qui donnait un effet inattendu en fonction de la hauteur (zones trop sombres et/ou mal réparties).
 
